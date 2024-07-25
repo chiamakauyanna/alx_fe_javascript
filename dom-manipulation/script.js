@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
     overlay.style.display = 'none'; // Hide overlay
   }
 
-  function addQuote(event) {
+  function createAddQuoteForm(event) {
     event.preventDefault();
     const newQuote = {
       quote: newQuoteText.value,
@@ -72,5 +72,5 @@ document.addEventListener("DOMContentLoaded", function() {
   newQuoteBtn.addEventListener('click', showRandomQuote);
   displayNextBtn.addEventListener('click', displayForm);
   closeFormBtn.addEventListener('click', closeForm);
-  addQuoteForm.addEventListener('submit', addQuote);
+  addQuoteForm.addEventListener('submit', createAddQuoteForm);
 });
