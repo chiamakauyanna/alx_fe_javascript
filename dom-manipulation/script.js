@@ -1,15 +1,13 @@
 document.addEventListener("DOMContentLoaded", function() {
   const quoteDisplay = document.getElementById('quoteDisplay');
-  const newQuoteBtn = document.getElementById('ShowNewQuote');
   const addQuoteForm = document.getElementById('addQuoteForm');
   const newQuoteText = document.getElementById('newQuoteText');
   const newQuoteCategory = document.getElementById('newQuoteCategory');
-  const displayNextBtn = document.getElementById('add-new-quote');
-  const closeFormBtn = document.getElementById('closeForm');
   const overlay = document.getElementById('overlay');
   const categorySelect = document.getElementById('categorySelect');
+  const importFileInput = document.getElementById('importFile');
 
-  const quotes = [
+  let quotes = JSON.parse(localStorage.getItem('quotes')) || [
     { quote: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
     { quote: "Do not watch the clock. Do what it does. Keep going.", category: "Motivation" },
     { quote: "Believe you can and you're halfway there.", category: "Motivation" },
@@ -34,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
       lastIndex = randomIndex;
       const quoteItem = filteredQuotes[randomIndex];
       quoteDisplay.innerHTML = `<i class='fas fa-quote-left' style='font-size:48px;'></i> ${quoteItem.quote} `;
+      sessionStorage.setItem('lastQuote', JSON.stringify(quoteItem));
     } else {
       quoteDisplay.innerHTML = "No quotes available for this category.";
     }
@@ -47,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
     overlay.style.display = 'none'; // Hide overlay
   }
 
-  function createAddQuoteForm(event) {
+  function addQuote(event) {
     event.preventDefault();
     const newQuote = {
       quote: newQuoteText.value,
@@ -55,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     quotes.push(newQuote);
+    saveQuotes();
 
     // Add new category to the select if it doesn't already exist
     if (![...categorySelect.options].some(option => option.value === newQuote.category)) {
@@ -67,10 +67,51 @@ document.addEventListener("DOMContentLoaded", function() {
     newQuoteText.value = '';
     newQuoteCategory.value = '';
     alert('New quote added successfully!');
+    closeForm();
   }
 
-  newQuoteBtn.addEventListener('click', showRandomQuote);
-  displayNextBtn.addEventListener('click', displayForm);
-  closeFormBtn.addEventListener('click', closeForm);
-  addQuoteForm.addEventListener('submit', createAddQuoteForm);
+  function saveQuotes() {
+    localStorage.setItem('quotes', JSON.stringify(quotes));
+  }
+
+  function exportToJsonFile() {
+    const dataStr = JSON.stringify(quotes);
+    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+    const exportFileDefaultName = 'quotes.json';
+
+    let linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+  }
+
+  function importFromJsonFile(event) {
+    const fileReader = new FileReader();
+    fileReader.onload = function(event) {
+      const importedQuotes = JSON.parse(event.target.result);
+      quotes.push(...importedQuotes);
+      saveQuotes();
+      alert('Quotes imported successfully!');
+    };
+    fileReader.readAsText(event.target.files[0]);
+  }
+
+  window.showRandomQuote = showRandomQuote;
+  window.displayForm = displayForm;
+  window.closeForm = closeForm;
+  window.addQuote = addQuote;
+  window.exportToJsonFile = exportToJsonFile;
+  window.importFromJsonFile = importFromJsonFile;
+
+  // Load last quote from session storage
+  const lastQuote = JSON.parse(sessionStorage.getItem('lastQuote'));
+  if (lastQuote) {
+    quoteDisplay.innerHTML = `<i class='fas fa-quote-left' style='font-size:48px;'></i> ${lastQuote.quote} `;
+  }
+
+  document.getElementById('add-new-quote').addEventListener('click', displayForm);
+  document.getElementById('closeForm').addEventListener('click', closeForm);
+  addQuoteForm.addEventListener('submit', addQuote);
+  document.getElementById('ShowNewQuote').addEventListener('click', showRandomQuote);
 });
