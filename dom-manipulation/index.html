@@ -34,6 +34,11 @@
       <button type="submit">Add Quote</button>
     </form>
   </div>
+
+  <div id="importQuote">
+    <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+    <button id="exportQuotes" onclick="exportToJsonFile()">Export Quotes</button>
+  </div>
   
   <script src="script.js"></script>
 </body>
