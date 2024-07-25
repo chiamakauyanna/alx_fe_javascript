@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
     { quote: "Don't let yesterday take up too much of today.", category: "Inspiration" },
   ];
 
-  let lastQuote = null;
+  let lastQuoteIndex = -1;
 
   function populateCategories() {
     const categories = [...new Set(quotes.map(quote => quote.category))];
@@ -47,17 +47,19 @@ document.addEventListener("DOMContentLoaded", function() {
   function showRandomQuote(filteredQuotes) {
     if (filteredQuotes.length === 0) {
       quoteDisplay.innerHTML = "No quotes available for this category.";
-      lastQuote = null;
+      lastQuoteIndex = -1;
       return;
     }
 
     let randomIndex;
+    // Ensure a different quote is selected
     do {
       randomIndex = Math.floor(Math.random() * filteredQuotes.length);
-    } while (filteredQuotes[randomIndex] === lastQuote);
+    } while (filteredQuotes[randomIndex] === filteredQuotes[lastQuoteIndex]);
 
-    lastQuote = filteredQuotes[randomIndex];
-    quoteDisplay.innerHTML = `<i class='fas fa-quote-left' style='font-size:48px;'></i> ${lastQuote.quote} `;
+    lastQuoteIndex = randomIndex;
+    const selectedQuote = filteredQuotes[randomIndex];
+    quoteDisplay.innerHTML = `<i class='fas fa-quote-left' style='font-size:48px;'></i> ${selectedQuote.quote} `;
   }
 
   function displayForm() {
