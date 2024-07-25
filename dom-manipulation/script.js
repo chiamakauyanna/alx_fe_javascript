@@ -1,14 +1,13 @@
 document.addEventListener("DOMContentLoaded", function() {
   const quoteDisplay = document.getElementById('quoteDisplay');
-  const newQuoteBtn = document.getElementById('newQuote');
+  const newQuoteBtn = document.getElementById('ShowNewQuote');
   const addQuoteForm = document.getElementById('addQuoteForm');
-  const quoteText = document.getElementById('quoteText');
-  const quoteCategory = document.getElementById('quoteCategory');
-  const addNewQuoteBtn = document.getElementById('add-new-quote');
+  const newQuoteText = document.getElementById('newQuoteText');
+  const newQuoteCategory = document.getElementById('newQuoteCategory');
+  const displayNextBtn = document.getElementById('add-new-quote');
   const closeFormBtn = document.getElementById('closeForm');
   const overlay = document.getElementById('overlay');
   const categorySelect = document.getElementById('categorySelect');
-
 
   const quotes = [
     { quote: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
@@ -51,8 +50,8 @@ document.addEventListener("DOMContentLoaded", function() {
   function addQuote(event) {
     event.preventDefault();
     const newQuote = {
-      quote: quoteText.value,
-      category: quoteCategory.value,
+      quote: newQuoteText.value,
+      category: newQuoteCategory.value,
     };
 
     quotes.push(newQuote);
@@ -65,14 +64,13 @@ document.addEventListener("DOMContentLoaded", function() {
       categorySelect.appendChild(newOption);
     }
 
-    quoteText.value = '';
-    quoteCategory.value = '';
+    newQuoteText.value = '';
+    newQuoteCategory.value = '';
     alert('New quote added successfully!');
   }
 
-
   newQuoteBtn.addEventListener('click', showRandomQuote);
-  addNewQuoteBtn.addEventListener('click', displayForm);
+  displayNextBtn.addEventListener('click', displayForm);
   closeFormBtn.addEventListener('click', closeForm);
   addQuoteForm.addEventListener('submit', addQuote);
 });
