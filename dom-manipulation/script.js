@@ -76,14 +76,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function exportToJsonFile() {
     const dataStr = JSON.stringify(quotes);
-    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
 
     const exportFileDefaultName = 'quotes.json';
 
     let linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('href', url);
     linkElement.setAttribute('download', exportFileDefaultName);
+    document.body.appendChild(linkElement);
     linkElement.click();
+    document.body.removeChild(linkElement);
   }
 
   function importFromJsonFile(event) {
