@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
         quotes = serverQuotes.concat(quotes.filter(localQuote => 
           !serverQuotes.some(serverQuote => serverQuote.quote === localQuote.quote)));
         saveQuotes();
-        alert('Quotes synced successfully!');
+        alert('Quotes synced with server!');
         populateCategories();
         filterQuotes();
       }
