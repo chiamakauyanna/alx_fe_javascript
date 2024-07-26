@@ -63,6 +63,34 @@ document.addEventListener("DOMContentLoaded", function() {
       overlay.style.display = 'none'; // Hide overlay
     }
   
+    async function fetchQuotesFromServer() {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts'); // Replace with actual server URL
+        const serverQuotes = await response.json();
+        return serverQuotes.map(quote => ({
+          quote: quote.title, // Assuming the API returns quotes in the title field
+          category: 'Server'
+        }));
+      } catch (error) {
+        console.error('Error fetching quotes from server:', error);
+        return [];
+      }
+    }
+  
+    async function postQuoteToServer(quote) {
+      try {
+        await fetch('https://jsonplaceholder.typicode.com/posts', { // Replace with actual server URL
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(quote)
+        });
+      } catch (error) {
+        console.error('Error posting quote to server:', error);
+      }
+    }
+  
     function addQuote(event) {
       event.preventDefault();
       const newQuote = {
@@ -72,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
   
       quotes.push(newQuote);
       saveQuotes();
+      postQuoteToServer(newQuote); // Post the new quote to the server
   
       // Add new category to the select if it doesn't already exist
       if (![...categoryFilter.options].some(option => option.value === newQuote.category)) {
@@ -127,26 +156,24 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   
     async function syncQuotes() {
-      try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts'); // Replace with actual server URL
-        const serverQuotes = await response.json();
-        const serverQuotesMapped = serverQuotes.map(quote => ({
-          quote: quote.title, // Assuming the API returns quotes in the title field
-          category: 'Server'
-        }));
-  
+      const serverQuotes = await fetchQuotesFromServer();
+      if (serverQuotes.length > 0) {
         // Conflict resolution: server data takes precedence
-        quotes = serverQuotesMapped.concat(quotes.filter(localQuote => 
-          !serverQuotesMapped.some(serverQuote => serverQuote.quote === localQuote.quote)));
-        
+        quotes = serverQuotes.concat(quotes.filter(localQuote => 
+          !serverQuotes.some(serverQuote => serverQuote.quote === localQuote.quote)));
         saveQuotes();
         alert('Quotes synced successfully!');
         populateCategories();
         filterQuotes();
-      } catch (error) {
-        console.error('Error syncing quotes:', error);
-        alert('Failed to sync quotes.');
       }
+    }
+  
+    function notifyUser(message) {
+      alert(message); // Simple alert for notification, can be replaced with a more sophisticated UI element
+    }
+  
+    function setupPeriodicSync(interval = 60000) { // Default to 1 minute intervals
+      setInterval(syncQuotes, interval);
     }
   
     window.showRandomQuote = showRandomQuote;
@@ -170,5 +197,6 @@ document.addEventListener("DOMContentLoaded", function() {
     syncQuotesButton.addEventListener('click', syncQuotes);
   
     populateCategories();
+    setupPeriodicSync(); // Start periodic sync
   });
   
