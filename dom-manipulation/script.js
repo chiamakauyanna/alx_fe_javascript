@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
   
-    function addQuote(event) {
+    function createAddQuoteForm(event) {
       event.preventDefault();
       const newQuote = {
         quote: newQuoteText.value,
@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function() {
     window.showRandomQuote = showRandomQuote;
     window.displayForm = displayForm;
     window.closeForm = closeForm;
-    window.addQuote = addQuote;
+    window.createAddQuoteForm = createAddQuoteForm;
     window.exportToJsonFile = exportToJsonFile;
     window.importFromJsonFile = importFromJsonFile;
     window.filterQuotes = filterQuotes;
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function() {
   
     document.getElementById('add-new-quote').addEventListener('click', displayForm);
     document.getElementById('closeForm').addEventListener('click', closeForm);
-    addQuoteForm.addEventListener('submit', addQuote);
+    addQuoteForm.addEventListener('submit', createAddQuoteForm);
     document.getElementById('ShowNewQuote').addEventListener('click', showRandomQuote);
     syncQuotesButton.addEventListener('click', syncQuotes);
   
