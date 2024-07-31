@@ -17,7 +17,7 @@
         <!-- Dynamically populated categories -->
       </select>
     </div>
-    <button id="syncQuotes">Sync Quotes</button>
+
     <button id="add-new-quote">Add New Quote</button>
   </div>
   <div id="quoteContainer">
@@ -37,6 +37,7 @@
   <div id="importQuote">
     <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
     <button id="exportQuotes" onclick="exportToJsonFile()">Export Quotes</button>
+    <button id="syncQuotes">Sync Quotes</button>
   </div>
   
   <script src="script.js"></script>
