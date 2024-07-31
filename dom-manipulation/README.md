@@ -1,8 +1,9 @@
-## Quote Management Application
+# Dynamic Quote Generator
 
-This application allows users to manage an array of quote objects, where each quote has text and a category. It includes features to display a random quote, add new quotes, import/export quotes, filter quotes by category, and synchronize quotes with a server.
+This application allows users to manage an array of quote objects, where each quote has text and a category.
+It includes features to display a random quote, add new quotes, import/export quotes, filter quotes by category, and synchronize quotes with a server.
 
-# Features
+## Features
 
 Display a random quote.
 Add new quotes.
@@ -11,6 +12,9 @@ Export quotes to a JSON file.
 Filter quotes by category.
 Synchronize quotes with a server.
 Periodically sync quotes with the server.
+
+
+![Quote generator screenshot](https://github.com/user-attachments/assets/8598941b-7079-4e63-ace1-20afef6fb352)
 
 
 
@@ -31,13 +35,13 @@ Enter the quote text and category.
 
 **Periodic Sync:** The application will automatically sync quotes with the server at regular intervals (default is 1 minute).
 
-# Server Interaction
+### Server Interaction
 **Fetching Quotes:** Quotes are fetched from a server endpoint (placeholder URL used in the script).
 
 **Posting Quotes:** New quotes are posted to a server endpoint (placeholder URL used in the script).
 
 Update the server URLs in the fetchQuotesFromServer and postQuoteToServer functions with actual endpoints as needed.
 
-# Note
+### Note
 This application uses localStorage to persist quotes and the last selected category filter.
 Ensure the application has internet access to sync quotes with the server.
